@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milat - Tu Tienda de Confianza</title>
+    <style>
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #93c5fd;
+            --accent-color: #60a5fa;
+            --light-blue: #dbeafe;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #9fcefc;
+        }
+
+        .header {
+            background: var(--primary-color);
+            padding: 1rem;
+            color: white;
+            text-align: center;
+        }
+
+        .nav {
+            background: var(--secondary-color);
+            padding: 1rem;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .nav-button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .nav-button:hover,
+        .nav-button:focus {
+            background: var(--primary-color);
+            outline: 2px solid white;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .product {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3/2;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .carousel-inner {
+            display: flex;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        .carousel-item {
+            min-width: 100%;
+            height: 100%;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(59, 130, 246, 0.7);
+            color: white;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .carousel-button:hover,
+        .carousel-button:focus {
+            background: rgba(59, 130, 246, 0.9);
+            outline: 2px solid white;
+        }
+
+        .carousel-button.prev {
+            left: 10px;
+        }
+
+        .carousel-button.next {
+            right: 10px;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .carousel-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .carousel-indicator.active {
+            background: white;
+        }
+
+        .product h3 {
+            font-size: 1.1rem;
+            margin: 1rem 0;
+        }
+
+        .product p {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .buy-button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.6rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+        }
+
+        .buy-button:hover,
+        .buy-button:focus {
+            background: var(--accent-color);
+            outline: 2px solid var(--primary-color);
+        }
+
+        .about {
+            background: var(--light-blue);
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+
+        .footer {
+            background: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .contact-info a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-button {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .main {
+                padding: 1rem;
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .contact-info {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <h1>MILAT</h1>
+        <p>Tu tienda de confianza</p>
+    </header>
+
+    <nav class="nav">
+        <button class="nav-button" onclick="filterProducts('all')">Todos</button>
+        <button class="nav-button" onclick="filterProducts('Herramientas')">Herramientas</button>
+        <button class="nav-button" onclick="filterProducts('Baño')">Baño</button>
+        <button class="nav-button" onclick="filterProducts('Cocina')">Cocina</button>
+        <button class="nav-button" onclick="filterProducts('Deportes')">Deportes</button>
+        <button class="nav-button" onclick="filterProducts('Iluminacion')">Iluminación</button>
+        <button class="nav-button" onclick="filterProducts('Niños')">Niños</button>
+        <button class="nav-button" onclick="filterProducts('Tecnologia')">Tecnología</button>
+        <button class="nav-button" onclick="filterProducts('Equipaje')">Equipaje</button>
+
+    </nav>
+
+    <main class="main">
+        <div class="products" id="products">
+            <!-- Ejemplo de producto para Tecnologia -->
+            <div class="product" data-category="Tecnologia">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="convertir.webp" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="PROYECTOR.jpg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="proyector.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+                <h3>Proyector HY300</h3>
+                <p>Precio: $299.990</p>
+                <p>Experimenta la magia de pulsar y jugar simplemente pulsa el boton del proyector portatil para IPhone
+                    y sumergete en un mundo de entretenimiento
+                </p>
+                <button class="buy-button" onclick="comprarProducto('Proyector HY300', 299.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Tecnologia">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="AION.jpg" height="10px" width="10%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="bocinas.x" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+                <h3>Parlante Alaxe</h3>
+                <p>Precio: 55.000</p>
+                <p>Parlante Alexe modelro GD-1RGB/Palante de forma Alexa, se puede conectar
+                    hasta dos para amplificar sonido via Bluetooth, duracion de cargar 15 horas.
+                </p>
+                <button class="buy-button" onclick="comprarProducto('Parlante Alaxe',55.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Tecnologia">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="1.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="4.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="5.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="6.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="7.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="8.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+                <h3>Dopler Fetal</h3>
+                <p>Precio: $70.000</p>
+                <p>El doppler fetaler un dispositivo portatil diseñado para escuchar los latidos del corazon del bebe
+                    durante el embarazo
+                    ,brindando tranquilidad a los futuros padres.
+                </p>
+                <button class="buy-button" onclick="comprarProducto('Dopler Fetal', 70.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+
+            <div class="product" data-category="Tecnologia">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="mouse.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>Maus Seisa Original</h3>
+                <p>Precio: $25.000</p>
+                <p>Mouse Optico Gamer Retroiluminada Seisa DN-N8930.Diseñado especialmente para gamers, Cuenta con 3200
+                    dip fast track rueda 3D
+                </p>
+                <button class="buy-button" onclick="comprarProducto('Maus Seisa Original', 25.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+
+            <div class="product" data-category="Tecnologia">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="nasal.niños.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>Aspiradora Nasal Bebe</h3>
+                <p>Precio: $25.000</p>
+                <p>Con este succionado nasa, podras mantener la nariz de tu bebe y niños limpia sin que sientan
+                    sensacion de asfixia,malestar o falta de respiracion.
+                </p>
+                <button class="buy-button" onclick="comprarProducto('Aspiradora Nasal Bebe', 25.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+        
+            <div class="product" data-category="Tecnologia">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="nasal.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Maquina VGR 304</h3>
+                <p>Precio: $70.000</p>
+                <P>Diseño resistente al agua, se puede utilizar en el baño afeitado humedo y seco, se puede utilizar con
+                    crema de afeitar 1,5 horas de carga rapida y segura</P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('Maquina VGR 304', 70.000)">Comprar por
+                    WhatsApp</button>
+           </div>
+        <div class="product" data-category="Tecnologia">
+            <div class="carousel">
+                <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                <div class="carousel-inner">
+                    <div class="carousel-item">
+                        <img src="pc.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc2.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc3.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc4.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc5.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc6.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc7.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    <div class="carousel-item">
+                        <img src="pc8.jpeg" height="100px" width="20%" alt="Proyector">
+                    </div>
+                    
+                    
+
+                </div>
+            </div>
+            <h3>Astronauta LEED</h3>
+            <p>Precio: $80.000</p>
+            <p>Proyector de estrellas de nebuloso astr4onautas
+                Este proyector de luz nocturna de estrellas LED cuenta con 8 efectos de nebuloso estrellado
+            </p>
+            <button class="buy-button" onclick="comprarProducto('Astronauta LEED', 80.000)">Comprar por
+                WhatsApp</button>
+        </div>
+            <div class="product" data-category=Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="metal.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="metal1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="metal2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="metal.4.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>HIDROLAVADORA</h3>
+                <p>Precio: $70.000</p>
+                <P>
+                    La hidrolavadora 48v se despacha con 2 baterias de caarga.Presion maxima de trabajo de 464 PSI con un caudal de 240 L/h, portatil pero potente
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('HIDROLAVADORA ', 70.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category=Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="LUCESITA.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LUZ METROS</h3>
+                <p>Precio: $39.990</p>
+                <P>
+                    lUZ SOLAR 100 LED MANGUERA 10 METROS Cuenta con 10 metros de distancia, cuenta con una estaca para
+                    ajustar el panel solarm duracion 13 horas, colores, blanca, calida y multicolor
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUZ 10 METROS ', 39.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="LU.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>LUZ 20 METROS</h3>
+                <p>Precio: $54.990</p>
+                <P>
+                    LUZ SOLAR 200 LED MANGUERA 20 METROS Cuenta con 20 metros de distancia, cuenta con una estaca para
+                    ajustar el panel solar, duracion 13 horas, colores, blanca, calida y multicolor
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUZ 20 METROS ', 54.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="LUC.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LUZ 30 METROS</h3>
+                <p>Precio: $54.990</p>
+                <P>
+                    LUZ 30 SOLAR 300 LED, MANGUERA 30 METROS Cuenta con 30 metros de distancia, cuenta con una estaca
+                    para ajustar el panel solar, duracion 13
+                    horas, colores, blanca, calida y multicolor.
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUZ 30 METROS ', 79.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="PERF.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LINTERNA MULTIFUNCIONAL</h3>
+                <p>Precio: $64.990</p>
+                <P>
+                La linterna multifuncional T6-COB es una herramienta esencial para cualquier aventura al aire libre
+                o situacion de emergencia con un diseño robusto en ABS acilmente portable
+                </P>
+
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LINTERNA MULTIFUNCIONAL ', 64.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="PIF.C" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LUCES 10 METROS</h3>
+                <p>Precio: $39.990</p>
+                <P>
+                    LUZ SOLAR 100 LED CABLE VERDE 10 METROS
+                    Cuenta con una estaca para ajustar el panel solar, duracion 13 horas.
+                    Colores blancom calido y multicolor
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUCES 10 METROS ', 39.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="COF.C" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LUCES 20 METROS</h3>
+                <p>Precio: $54.990</p>
+                <P>LUCES SOLAR 300 LED CABLE VERDE 20 METROS
+                    Cuenta con una estaca para ajustar el panel solar, duracion 13 horas.
+                    colores blanco, calida y multicolor
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUCES 20 METROS ', 54.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="LAF,C.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LUCES 30 METROS</h3>
+                <p>Precio: $79.990</p>
+                <P>LUCES SOLAR 300 LED CABLE VERDE 30 METROS
+                    Cuenta con una estaca para justar el panel solar, duracion 13 horas
+                    colores: blaco, calido y multicolor
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUCES 30 METROS ', 79.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Iluminacion">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="COLT.C" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>LUCES 50 METROS</h3>
+                <p>Precio: $89.990</p>
+                <P>LUCES SOLAR 500 LED CABLE VERDE 50 METROS
+                    Cuenta con una estaca para justar el panel solar, duracion 13 horas
+                    colores: blaco, calido y multicolor
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('LUCES 50 METROS ', 89.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Cocina">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="pt.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt4.jpeg".jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt5.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt6.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt7.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt8.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt9.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt10.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt11.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt12.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt13.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt14.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                     </div>
+                </div>
+
+                <h3>GRIFO MODERNO</h3>
+                <p>Precio: $119.990</p>
+                <P>Grifo moderno plateado
+                    Un grifo moderno es un disositivo de alta tecnologia diseñado para controlar el flujo de agua en
+                    Cocina
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto(' GRIFO MODERNO', 119.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+           
+            <div class="product" data-category="Baño">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="pt.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt4.jpeg".jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt5.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt6.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt7.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt8.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt9.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt10.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt11.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt12.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt13.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="pt14.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                     </div>
+                </div>
+
+                <h3>GRIFO MODERNO</h3>
+                <p>Precio: $119.990</p>
+                <P>Grifo moderno plateado
+                    Un grifo moderno es un disositivo de alta tecnologia diseñado para controlar el flujo de agua en
+                    baños
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto(' GRIFO MODERNO', 119.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Cocina">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="g1.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g4.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g6.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g7.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g8.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g9.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g10.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g11.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g12.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                          <div class="carousel-item">
+                            <img src="g13.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <h3>GRIFO MODERNO</h3>
+                <p>Precio: $119.990</p>
+                <P>Grifo moderno Negro
+                    Un grifo moderno es un disositivo de alta tecnologia diseñado para controlar el flujo de agua en
+                    Cocina
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto(' GRIFO MODERNO', 119.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Baño">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="g1.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g4.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g6.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g7.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g8.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g9.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g10.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g11.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="g12.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                          <div class="carousel-item">
+                            <img src="g13.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <h3>GRIFO MODERNO</h3>
+                <p>Precio: $119.990</p>
+                <P>Grifo moderno Negro
+                    Un grifo moderno es un disositivo de alta tecnologia diseñado para controlar el flujo de agua en
+                    baños
+
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto(' GRIFO MODERNO', 119.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Baño">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="hormigas.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>TAPETE SET 2 BAÑO</h3>
+                <p>Precio: $22.990</p>
+                <P>
+                    Este set de tapetes proporciona seguridad adicionar para evitar resbalones, al mismo tiempo que
+                    ofrece un toque de control y estilo a cualquier rincon del hogar
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('TAPETE SET 2 BAÑO', 22.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Cocina">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="cocina.x" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="cocina.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>ESTUFA ELECTRICA 2</h3>
+                <p>Precio: $110.000</p>
+                <P>
+                    Descubre la comodidad y versatilidad de la
+                    Estufa Electrica Portatil deal para espacio pequeños, esta cocinilla es perfecto para quienes
+                    necesitan una solucion
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('ESTUFA ELECTRICA 2', 22.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Deportes">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="101.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="102.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="103.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="104.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="105.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="106.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>TABLA PUSH</h3>
+                <p>Precio: $35.000</p>
+                <P>
+                    Tabla de entrenamiento push uo sistema plegable multifucion 9 portaitl gimnasio soportes de
+                    ejercicio para entrenamiento de fitness en casa
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('TABLA PUSH', 35.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Deportes">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="r.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rp.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rod.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rodi.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rodilla.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rodilla1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rodilla2.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="rodilla3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>RODIllERA ANTI DOLOR</h3>
+                <p>Precio: $12.000</p>
+                <P>
+                    Esta rodillera es perfecta para cualquier persona que busque proteccion y apoyo adicional para sus
+                    rodillas ya sea para entrenamientos intensos o para el alivio de molestias diarias.
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('RODILLERA ANTI DOLOR', 12.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Deportes">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="10.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="11.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="12.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="13.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="14.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>SET BANDAS ELASTICAS</h3>
+                <p>Precio: $15.000</p>
+                <P>
+                    Este set es perfecto tanto apra principiantes como para expertos,adaptandose a tus necesidades a
+                    medida que avanzas en tu entrenamiento
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('SIET BANDAS ELASTICAS', 15.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Deportes">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                       <div class="carousel-item">
+                            <img src="01.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="02.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="03.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="04.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="05.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="06.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="07.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="08.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="09.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>                       
+                    </div>
+                </div>
+
+                <h3>EJERCITADOR DE DEDOS</h3>
+                <p>Precio: $30.000</p>
+                <P>
+                    El ejercitador de dedos es un dispositivo compacto diseñado para fortalecer y mejorar la
+                    flexibilidad de los dedos y manos
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('EJERCITADOR DE DEDOS', 30.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Niños">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="muñeca.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca3.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca4.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca5.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca6.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="muñeca7.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>BEBE CHILLON</h3>
+                <p>Precio: $99.990</p>
+                <P>
+                    Presentamos el Bebito Bebesito Bebe Lloron, una encantadora muñeca diseñada especialmente para niñas
+                    de 3 a 7 años
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('BEBE CHILLON', 99.990)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Niños">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="16.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>ANIMALES ANTIESTRES</h3>
+                <p>Precio: $60.000</p>
+                <P>
+                    Compañero relajante para niños permita que su hijo se duerma en un sueño tranquilo con Sooting Koala
+                    Bear,
+                    que utiliza sonidos relajantes,musica y movimientos de respiracion ritmicos.
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('ANIMALES ANTIESTRES', 60.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Niños">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="a.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="b.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="c.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="d.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="e.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="f.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="g.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="h.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div><div class="carousel-item">
+                            <img src="i.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+
+                <h3>SET DE ARTE 145</h3>
+                <p>Precio: $55.000</p>
+                <P>
+                    Facil De Transportar Y Almacenamiento Ordenado: La caja de embalaje hecha de aluminio es hermoso y
+                    duradero, tiene un asa para facilitar el transporte
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('SET DE ARTE 145', 55.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Herramientas">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="HERRAMIENTAS.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>HERRAMIENTAS AS SET 187</h3>
+                <p>Precio: $380.000</p>
+                <h4>
+                    Este set de herramientas es perfecto para que tengas todo lo necesario para desempeñar cualquier
+                    tarea sin inconvenientes
+                </h4>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('HERRAMIENTAS AS SET 187', 380.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Herramientas">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="TELEGONO.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>PORTA CELULAR</h3>
+                <p>Precio: $20.000</p>
+                <P>
+                    Soporte para telefono movil espejo retrovisor de motocicleta
+                    Resiistente de 360 grados, usa todo el tiempo pantalla tactil sensible
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('PORTA CELULAR', 20.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Equipaje">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="PUMBA.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>PAÑALERA CUNA</h3>
+                <p>Precio: $64.000</p>
+                <P>
+                    Mochila ideal para viajar con gran capacidad, resistente al agua y duraderam gracias a sus correas y
+                    espaldar acolchado es super comoda y facil de llevar
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('PAÑALERA CUNA', 64.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Equipaje">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                         <div class="carousel-item">
+                            <img src="m.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="ma.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="mal.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="male.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="maleta1.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="mlaeta2.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="maleta3.jpeg"100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="maleta4.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+                <h3>MALETA GYM</h3>
+                <p>Precio: $45.000</p>
+                <P>
+                    Nuestra bolsa de gimnasio tiene u diseño de separacion humeda y seca, que puede mantener su ropa
+                    sudorosa, toallas y trajes de baño por separado
+                </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('MALETA GYM', 45.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Equipaje">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="maleta amazon.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="maleta.jpeg" height="100px" width="20%" alt="Proyector vista 2">
+                        </div>
+                    </div>
+                </div>
+                <h3>MALETA AMAZON</h3>
+                <p>Precio: $62.000</p>
+                    <P>
+                        Mochila ideal para viajar con gran capacidad resistente al agua y duradera, gracias a sus
+                        correas y espaldar acolchado es super comoda y facil de llevar
+                    </P>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('MALETA AMAZON', 62.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+            <div class="product" data-category="Equipaje">
+                <div class="carousel">
+                    <button class="carousel-button prev" onclick="moveCarousel(this, -1)">←</button>
+                    <button class="carousel-button next" onclick="moveCarousel(this, 1)">→</button>
+                    <div class="carousel-inner">
+                        <div class="carousel-item">
+                            <img src="AMAZON.jpeg" height="100px" width="20%" alt="Proyector">
+                        </div>
+                    </div>
+                </div>
+                <h3>MALETA T60 DEPORTIVA</h3>
+                <p>Precio: $40.000</p>
+                <b>
+                    <P>
+                        Bolso Deportivo T60 Impermeable Maleta Para viajes Material Tela y exterior Plastico Modelo T60
+                        Altua24 cm
+                        Ancho 24cm
+                    </P>
+                </b>
+                <img alt="">
+                <button class="buy-button" onclick="comprarProducto('MALETA T60 DEPORTIVA', 40.000)">Comprar por
+                    WhatsApp</button>
+            </div>
+
+
+        </div>
+        <section class="about">
+            <h2>Sobre Nosotros</h2>
+                <p>En Milat, nos comprometemos a brindar la mejor experiencia de compra a nuestros clientes. Somos una
+                    empresa dedicada a ofrecer productos de alta calidad con un servicio excepcional. Nuestra pasión es
+                    satisfacer las necesidades de nuestros clientes con productos innovadores y un servicio
+                    personalizado.
+                </p>
+        </section>
+    </main>
+    <footer class="footer">
+        <div class="contact-info">
+            <div>
+                <h3>Contacto</h3>
+                <p>📞 Teléfono: +573108588704</p>
+                <p>📧 Email: samuelmartinez7643@gmail.com</p>
+                <div>
+                    <h3>Ubicación</h3>
+                    <p>🏢 Dirección: Cr 13 Con Carrera 21. Bogota-Bogota D.C</p>
+                    <P>🕒 LUN-VIE: 7:00am - 8:00pm </P>
+                    <p>SABADO: 8:00am - 1:00pm</p>
+                    <P>DOMINGO: No hay servicio fisico</P>
+                    <p>Pedidos: lunes a Sabados</p>
+                </div>
+                <div>
+                    <h3>Síguenos</h3>
+                    <a href="https://www.instagram.com/milat_onlineshop?igsh=OTQzenU5OHJ4MzI0">📷 Instagram:
+                        @milat_onlineshop</a>
+                    <a href="">📱 Tik Tok: @</a>
+                    <img src="logo.png" height:100px; width="70%" alt="logo">
+                </div>
+            </div>
+    </footer>
+
+    <script>
+        function filterProducts(category) {
+            const products = document.querySelectorAll('.product');
+            products.forEach(product => {
+                if (category === 'all' || product.dataset.category === category) {
+                    product.style.display = 'block';
+                } else {
+                    product.style.display = 'none';
+                }
+            });
+        }
+
+        function comprarProducto(nombre, precio) {
+            const mensaje = `Hola, me interesa comprar: ${nombre} - Precio: $${precio}`;
+            const whatsappUrl = `https://wa.me/+573108588704?text=${encodeURIComponent(mensaje)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function moveCarousel(button, direction) {
+            const carousel = button.parentElement.querySelector('.carousel-inner');
+            const items = carousel.children;
+            const itemWidth = carousel.children[0].offsetWidth;
+
+            // Obtener el índice actual
+            const currentTransform = carousel.style.transform || 'translateX(0px)';
+            let currentIndex = Math.abs(parseInt(currentTransform.match(/-?\d+/) || 0)) / itemWidth;
+
+            // Calcular nuevo índice
+            let newIndex = currentIndex + direction;
+            if (newIndex < 0) newIndex = items.length - 1;
+            if (newIndex >= items.length) newIndex = 0;
+
+            // Aplicar transformación
+            carousel.style.transform = `translateX(-${newIndex * itemWidth}px)`;
+        }
+    </script>
+</body>
+
+</html>
+
+
+ghpages . publish ( dir ,  callback ) ; 
+// o... 
+ghpages . publish ( dir ,  opciones ,  callback ) ;
